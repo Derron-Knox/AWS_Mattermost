@@ -22,7 +22,7 @@ Created to automate the deployment of AWS infrastructure and provision instances
 ### Instructions:
 
 - create s3 bucket to store state file and update backend.tf
-- update path to aws private key in intances.tf file (--private-key ~/PATHTOPROVATEKEY )
+- update path to aws private key in intances.tf and ansible.cfg files (--private-key ~/PATHTOPROVATEKEY )
 - update database information in database.tf
 - Deploy infrastructure with terraform init and apply
 - log into bastion host with IP output displayed once terraform completes. 
