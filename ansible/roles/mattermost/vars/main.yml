@@ -1,0 +1,13 @@
+---
+# vars file for mattermost
+
+# install package user
+mattermost_package_url: "https://releases.mattermost.com/5.30.1/mattermost-5.30.1-linux-amd64.tar.gz"
+
+# sql setup (sql_driver should be either 'postgress' or 'mysql')
+sql_driver: ""
+sql_password: ""
+sql_host: ""
+
+# full base URL of the site
+site_url: ""

@@ -1,0 +1,34 @@
+---
+- hosts: mattermost-application
+  gather_facts: true
+  become: yes
+  remote_user: ec2-user
+  become_user: root
+  
+  tasks:
+  
+    - name: install epel
+      shell: sudo amazon-linux-extras install epel -y
+      when: ansible_os_family == 'RedHat'
+
+    - name: Add nginx stable repository from PPA and install its signing key on Ubuntu target
+      apt_repository:
+        repo: ppa:ansible/ansible
+      when: ansible_os_family == 'Debian'
+
+    - name: update yum (Redhat)
+      yum: name=* state=latest
+      when: ansible_os_family == 'RedHat'
+
+    - name: Update apt cache (Debian).
+      apt: update_cache=true cache_valid_time=86400
+      when: ansible_os_family == 'Debian'
+
+    - name: install packages
+      yum:
+        name:
+          - nano
+          - mariadb
+
+  roles:
+    - mattermost

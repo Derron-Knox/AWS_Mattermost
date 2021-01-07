@@ -1,0 +1,3 @@
+---
+# tasks file for mattermost
+- import_tasks: configure.yml

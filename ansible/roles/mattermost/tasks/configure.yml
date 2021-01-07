@@ -1,0 +1,56 @@
+---
+#install and configure mattermost
+
+- name: Download mattermost and unzip it
+  unarchive:
+    src: "{{ mattermost_package_url }}"
+    dest: /opt
+    remote_src: yes
+
+- name: copy config file
+  template:
+    src: templates/config.json.j2
+    dest: /opt/mattermost/config/config.json
+
+- name: Create the storage directory for files
+  file:
+    path: /opt/mattermost/data
+    state: directory
+
+- name: Create Mattermost group
+  group:
+    name: mattermost
+    state: present
+
+- name: Add Mattermost user
+  user:
+    name: mattermost
+    group: mattermost
+    state: present
+
+- name: Recursively change ownership of mattermost directory
+  file:
+    path: /opt/mattermost
+    state: directory
+    recurse: yes
+    owner: mattermost
+    group: mattermost
+    mode: g+w
+
+- name: Copy mattermost service with owner and permissions
+  copy:
+    src: files/mattermost.service
+    dest: /etc/systemd/system/mattermost.service
+    owner: mattermost
+    group: mattermost
+    mode: '0644'
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Start mattermost service and enable it on startup
+  service:
+    name: mattermost
+    state: started
+    enabled: yes
